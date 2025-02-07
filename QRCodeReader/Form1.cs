@@ -22,12 +22,13 @@ namespace QRCodeReader
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // You can perform additional setup here if needed
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             // Get the form's position and size in screen coordinates
+            // Had to manually adjust position
             int startX = (int)(this.Left + this.Bounds.Left * 1.3);
             int startY = (int)(this.Top * 2.53);
             int width = (int)(this.Width * 2 * 1.1);
@@ -38,7 +39,7 @@ namespace QRCodeReader
             {
                 using (Graphics g = Graphics.FromImage(bm))
                 {
-                    // Capture the screen area exactly where the form is positioned
+                    // Capture the screen area where the form is positioned
                     g.CopyFromScreen(new System.Drawing.Point(startX, startY), System.Drawing.Point.Empty, new System.Drawing.Size(width, height));
                 }
 
@@ -51,7 +52,7 @@ namespace QRCodeReader
                 // Set the new captured image
                 this.BackgroundImage = (Bitmap)bm.Clone();
 
-                // Adjust form appearance
+                // Change backcolor to visible color and show exit button
                 this.BackColor = System.Drawing.Color.LightGray;
                 button2.Visible = true;
 
@@ -84,7 +85,7 @@ namespace QRCodeReader
                 }
             }
         }
-
+        // X button
         private void button2_Click(object sender, EventArgs e)
         {
             if (this.BackgroundImage == null)
@@ -93,20 +94,24 @@ namespace QRCodeReader
             }
             else
             {
+                // Change to transparent and remove image
                 this.BackColor = System.Drawing.Color.LimeGreen;
                 this.BackgroundImage = null;
 
+                // Delete MyImage if it exists
                 if (System.IO.File.Exists("MyImage.bmp"))
                 {
                     System.IO.File.Delete("MyImage.bmp");
                 }
 
+                // Reset form
                 button2.Visible = false;
                 richTextBox1.Text = "";
                 richTextBox1.Visible = false;
             }
         }
 
+        // Allows hyperlinks
         private void richTextBox1_Clicked(object sender, LinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(e.LinkText);
